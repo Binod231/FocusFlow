@@ -80,6 +80,8 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   scroll-behavior: smooth;
+  overflow-x: hidden;
+  width: 100%;
 }
 
 body {
@@ -88,6 +90,7 @@ body {
   color: var(--t1);
   min-height: 100vh;
   overflow-x: hidden;
+  width: 100%;
   line-height: 1.5;
 }
 

@@ -191,7 +191,23 @@
 @media (max-width: 600px) {
   .hero { padding: 48px 0 36px; }
   .body { font-size: 0.95rem; }
-  .stat { padding: 12px 16px; min-width: 60px; }
+  .stats {
+    flex-wrap: wrap;
+    background: transparent;
+    border: none;
+    gap: 8px;
+    width: 100%;
+  }
+  .stat {
+    padding: 12px;
+    min-width: calc(50% - 4px);
+    background: var(--bg-3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+  }
+  .stat:last-child {
+    border-right: 1px solid var(--border);
+  }
   .statValue { font-size: 1.1rem; }
   .featureDesc { display: none; }
   .title { font-size: clamp(2.1rem, 8vw, 3rem); }
