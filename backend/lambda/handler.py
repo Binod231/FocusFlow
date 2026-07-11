@@ -163,8 +163,15 @@ def lambda_handler(event: dict, context) -> dict:
     except bedrock.exceptions.ModelNotReadyException:
         return respond(503, {"error": "Bedrock model is warming up. Please try again in a moment."})
     except Exception as e:
-        print(f"[ERROR] Bedrock call failed: {e}")
-        return respond(502, {"error": f"AI service error: {str(e)}"})
+        err_str = str(e)
+        print(f"[ERROR] Bedrock call failed: {err_str}")
+        if "not allowed for this account" in err_str or "ValidationException" in err_str:
+            return respond(403, {
+                "error": "Bedrock Nova Lite access not enabled on this AWS account. "
+                         "Go to: AWS Console → Amazon Bedrock → Model access → "
+                         "enable 'Amazon Nova Lite' → Save changes (takes ~60s)."
+            })
+        return respond(502, {"error": f"AI service error: {err_str}"})
 
     # Save session to DynamoDB (best-effort)
     session_id = str(uuid.uuid4())
