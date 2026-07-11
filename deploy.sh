@@ -70,7 +70,7 @@ sam deploy \
   --capabilities CAPABILITY_IAM \
   --parameter-overrides Stage="${STAGE}" \
   --no-fail-on-empty-changeset \
-  --no-cli-pager
+  --no-confirm-changeset
 
 # ── Capture API URL ───────────────────────────────────────────
 echo ""
