@@ -1,48 +1,83 @@
 .card {
-  display: grid;
-  grid-template-columns: 36px 1fr 44px;
-  gap: 0 14px;
-  align-items: start;
-  padding: 16px 18px;
+  position: relative;
   background: var(--bg-2);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: var(--radius-md);
   transition: all 200ms var(--ease);
   animation: slideUp 0.35s var(--ease) both;
-}
-
-@keyframes slideUp {
-  from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: translateY(0); }
+  overflow: hidden;
 }
 
 .card:hover {
   border-color: var(--border-2);
   background: var(--bg-3);
   transform: translateX(3px);
+  box-shadow: var(--shadow-sm);
 }
 
 .card.done {
-  opacity: 0.45;
+  opacity: 0.4;
+  filter: grayscale(0.4);
 }
 
-/* Rank */
-.rank {
+.card.expanded {
+  border-color: var(--indigo-border);
+  background: var(--bg-3);
+}
+
+/* ── Rank accent strip ──────────────────────────────────────── */
+.rankAccent {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: linear-gradient(to bottom, var(--indigo), var(--violet));
+  border-radius: 3px 0 0 3px;
+}
+
+/* ── Card inner ─────────────────────────────────────────────── */
+.cardInner {
+  display: grid;
+  grid-template-columns: 36px 1fr 48px;
+  gap: 0 14px;
+  align-items: start;
+  padding: 16px 18px 16px 22px;
+}
+
+/* ── Rank col ───────────────────────────────────────────────── */
+.rankCol {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-top: 3px;
+  padding-top: 2px;
 }
 
-.rankEmoji { font-size: 1.2rem; line-height: 1; }
-.rankNum   { font-size: 0.72rem; font-weight: 700; color: var(--t4); font-family: var(--font-mono); }
+.rankEmoji {
+  font-size: 1.25rem;
+  line-height: 1;
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.4));
+}
 
-/* Body */
-.body { min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+.rankNum {
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--t4);
+  font-family: var(--font-mono);
+}
 
+/* ── Body ───────────────────────────────────────────────────── */
+.body {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+/* ── Title row ──────────────────────────────────────────────── */
 .titleRow {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 8px;
 }
 
@@ -50,8 +85,8 @@
   font-size: 0.875rem;
   font-weight: 600;
   color: var(--t1);
-  letter-spacing: -0.01em;
-  line-height: 1.4;
+  letter-spacing: -0.015em;
+  line-height: 1.45;
   flex: 1;
   min-width: 0;
   word-break: break-word;
@@ -63,11 +98,60 @@
   color: var(--t4);
 }
 
-/* Checkbox */
-.checkbox {
-  width: 20px;
-  height: 20px;
+/* ── Title actions ──────────────────────────────────────────── */
+.titleActions {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-shrink: 0;
+  padding-top: 1px;
+}
+
+/* ── Difficulty dots ────────────────────────────────────────── */
+.difficulty {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding: 0 2px;
+}
+
+.diffDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  transition: background var(--dur) var(--ease);
+}
+
+/* ── Expand button ──────────────────────────────────────────── */
+.expandBtn {
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   border-radius: 6px;
+  color: var(--t4);
+  transition: all var(--dur) var(--ease);
+  border: 1px solid transparent;
+}
+
+.expandBtn:hover {
+  color: var(--t2);
+  background: var(--bg-4);
+  border-color: var(--border);
+}
+
+.expanded .expandBtn {
+  color: var(--indigo-light);
+  background: var(--indigo-dim);
+  border-color: var(--indigo-border);
+}
+
+/* ── Checkbox ───────────────────────────────────────────────── */
+.checkbox {
+  width: 22px;
+  height: 22px;
+  border-radius: 7px;
   border: 1.5px solid var(--border-2);
   background: transparent;
   flex-shrink: 0;
@@ -78,17 +162,18 @@
   transition: all var(--dur) var(--ease);
 }
 
-.checkbox:hover { border-color: var(--green); background: rgba(34,197,94,0.08); }
-.checkbox.checked { background: rgba(34,197,94,0.15); border-color: var(--green); }
-
-/* Insight */
-.insight {
-  font-size: 0.78rem;
-  color: var(--t3);
-  line-height: 1.55;
+.checkbox:hover {
+  border-color: var(--green);
+  background: var(--green-dim);
 }
 
-/* Tags */
+.checkbox.checked {
+  background: rgba(34,197,94,0.18);
+  border-color: var(--green);
+  box-shadow: 0 0 8px rgba(34,197,94,0.2);
+}
+
+/* ── Tags ───────────────────────────────────────────────────── */
 .tags {
   display: flex;
   flex-wrap: wrap;
@@ -99,78 +184,125 @@
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  font-size: 0.7rem;
+  font-size: 0.69rem;
   font-weight: 500;
   color: var(--t3);
   background: var(--bg-4);
   border: 1px solid var(--border);
   border-radius: 6px;
-  padding: 3px 7px;
+  padding: 3px 8px;
+  transition: all var(--dur) var(--ease);
 }
 
-/* Score bars */
+.tag:first-child { font-family: var(--font-mono); }
+
+/* ── Score bars ─────────────────────────────────────────────── */
 .bars {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  margin-top: 2px;
+  gap: 5px;
 }
 
 .bar {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 7px;
 }
 
 .barLabel {
-  font-size: 0.65rem;
+  font-size: 0.63rem;
   color: var(--t4);
-  width: 44px;
+  width: 46px;
   flex-shrink: 0;
   font-family: var(--font-mono);
+  font-weight: 500;
 }
 
 .barTrack {
   flex: 1;
-  height: 3px;
-  background: rgba(255,255,255,0.05);
-  border-radius: 2px;
+  height: 4px;
+  background: rgba(255,255,255,0.04);
+  border-radius: 3px;
   overflow: hidden;
 }
 
 .barFill {
   height: 100%;
-  border-radius: 2px;
-  transition: width 0.8s var(--ease);
+  border-radius: 3px;
+  transition: width 0.9s var(--ease);
 }
 
 .barVal {
-  font-size: 0.65rem;
+  font-size: 0.63rem;
   color: var(--t4);
   font-family: var(--font-mono);
   width: 14px;
   text-align: right;
+  font-weight: 600;
 }
 
-/* Score column */
+/* ── Expanded insight ───────────────────────────────────────── */
+.insightExpanded {
+  background: var(--bg-4);
+  border: 1px solid var(--indigo-border);
+  border-radius: var(--radius-sm);
+  padding: 12px;
+  animation: slideUp 0.2s var(--ease);
+  margin-top: 2px;
+}
+
+.insightHeader {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.insightIcon { font-size: 0.8rem; }
+
+.insightLabel {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--indigo-light);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.insightText {
+  font-size: 0.78rem;
+  color: var(--t2);
+  line-height: 1.6;
+}
+
+/* ── Score col ──────────────────────────────────────────────── */
 .scoreCol {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2px;
+  gap: 3px;
   padding-top: 2px;
 }
 
 .ring { overflow: visible; }
 
 .ringFill {
-  transition: stroke-dasharray 1s var(--ease);
+  transition: stroke-dasharray 1.1s var(--ease);
 }
 
 .scoreLabel {
-  font-size: 0.6rem;
+  font-size: 0.58rem;
   color: var(--t4);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
   font-family: var(--font-mono);
+  font-weight: 600;
+}
+
+/* ── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 480px) {
+  .cardInner {
+    grid-template-columns: 28px 1fr 40px;
+    gap: 0 10px;
+    padding: 14px 14px 14px 16px;
+  }
 }

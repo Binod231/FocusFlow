@@ -11,6 +11,13 @@ export default function App() {
 
   return (
     <div className={styles.app}>
+      {/* Animated background orbs */}
+      <div className={styles.bgCanvas} aria-hidden="true">
+        <div className={`${styles.orb} ${styles.orb1}`} />
+        <div className={`${styles.orb} ${styles.orb2}`} />
+        <div className={`${styles.orb} ${styles.orb3}`} />
+      </div>
+
       <Header />
 
       <main className={styles.main} id="main-content">
@@ -18,7 +25,6 @@ export default function App() {
           <Hero />
 
           <div className={styles.layout}>
-            {/* Input always visible */}
             <InputPanel
               input={input}
               setInput={setInput}
@@ -28,7 +34,6 @@ export default function App() {
               setError={setError}
             />
 
-            {/* Results slide in when ready */}
             {result && <Results data={result} />}
           </div>
         </div>
@@ -39,17 +44,31 @@ export default function App() {
           <div className={styles.footerLeft}>
             <span className={styles.footerLogo}>FocusFlow</span>
             <span className={styles.footerSep}>·</span>
-            <span>AWS Weekend Productivity Challenge 2026</span>
+            <span className={styles.footerTagline}>AWS Weekend Productivity Challenge 2026</span>
           </div>
+
           <div className={styles.footerRight}>
-            <span>Built with</span>
-            <span className={styles.awsOrange}>Amazon Bedrock</span>
-            <span className={styles.footerSep}>·</span>
-            <span>Lambda</span>
-            <span className={styles.footerSep}>·</span>
-            <span>DynamoDB</span>
-            <span className={styles.footerSep}>·</span>
-            <span>Amplify</span>
+            <div className={styles.footerTechStack}>
+              <span className={`${styles.techBadge} ${styles.aws}`}>
+                <svg width="10" height="10" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path d="M10 2L2 7v6l8 5 8-5V7L10 2z"/>
+                </svg>
+                Bedrock
+              </span>
+              <span className={`${styles.techBadge} ${styles.lambda}`}>λ Lambda</span>
+              <span className={`${styles.techBadge} ${styles.dynamo}`}>⚡ DynamoDB</span>
+            </div>
+
+            <div className={styles.footerLinks}>
+              <a
+                href="https://github.com/Binod231/FocusFlow"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.footerLink}
+              >
+                GitHub
+              </a>
+            </div>
           </div>
         </div>
       </footer>

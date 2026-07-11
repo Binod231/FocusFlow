@@ -1,137 +1,232 @@
 .results {
   display: flex;
   flex-direction: column;
-  gap: 24px;
-  animation: fadeIn 0.4s var(--ease) both;
+  gap: 20px;
+  animation: slideUp 0.45s var(--ease) both;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(12px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-/* Banner */
+/* ── Banner ─────────────────────────────────────────────────── */
 .banner {
   display: flex;
   align-items: flex-start;
+  justify-content: space-between;
   gap: 16px;
   padding: 20px 22px;
   background: var(--bg-2);
   border: 1px solid var(--indigo-border);
-  border-radius: 14px;
-  background-image: linear-gradient(135deg, rgba(99,102,241,0.06) 0%, transparent 60%);
+  border-radius: var(--radius-lg);
+  background-image: linear-gradient(135deg, rgba(99,102,241,0.07) 0%, rgba(167,139,250,0.03) 60%, transparent 100%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
 }
 
-.bannerIcon { font-size: 1.6rem; flex-shrink: 0; line-height: 1; padding-top: 2px; }
+.bannerLeft {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  flex: 1;
+  min-width: 0;
+}
+
+.bannerIconWrap {
+  width: 40px;
+  height: 40px;
+  background: var(--bg-4);
+  border: 1px solid var(--indigo-border);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  flex-shrink: 0;
+  box-shadow: 0 0 12px var(--indigo-glow);
+}
+
+.bannerContent {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
 
 .bannerSummary {
   font-size: 0.9rem;
   font-weight: 500;
   color: var(--t1);
   line-height: 1.55;
-  margin-bottom: 8px;
 }
 
-.bannerTip {
-  font-size: 0.8rem;
-  color: var(--sky);
+.coachingTip {
   display: flex;
   align-items: flex-start;
-  gap: 6px;
-  line-height: 1.5;
+  gap: 7px;
 }
 
-.tipIcon { flex-shrink: 0; }
-
-/* Grid */
-.grid {
-  display: grid;
-  grid-template-columns: 1fr 320px;
-  gap: 24px;
-  align-items: start;
+.tipBadge {
+  font-size: 0.85rem;
+  flex-shrink: 0;
+  line-height: 1.55;
 }
 
-@media (max-width: 800px) {
-  .grid { grid-template-columns: 1fr; }
+.tipText {
+  font-size: 0.8rem;
+  color: var(--sky);
+  line-height: 1.55;
 }
 
-/* Section headers */
-.sectionHead {
+/* ── Copy button ────────────────────────────────────────────── */
+.copyBtn {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin-bottom: 12px;
+  gap: 6px;
+  flex-shrink: 0;
+  padding: 8px 14px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--t2);
+  background: var(--bg-4);
+  border: 1px solid var(--border-2);
+  border-radius: var(--radius-sm);
+  transition: all var(--dur) var(--ease);
+  white-space: nowrap;
 }
 
-.sectionLabel {
-  font-size: 0.72rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--t4);
+.copyBtn:hover {
+  color: var(--t1);
+  border-color: var(--indigo-border);
+  background: var(--indigo-dim);
 }
 
-.sectionCount {
-  font-size: 0.72rem;
-  color: var(--t4);
+.copyBtn.copied {
+  color: var(--green);
+  border-color: rgba(34,197,94,0.35);
+  background: var(--green-dim);
+}
+
+/* ── Tabs ───────────────────────────────────────────────────── */
+.tabs {
+  display: flex;
+  gap: 4px;
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 4px;
+}
+
+.tab {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 12px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--t3);
+  border-radius: 9px;
+  transition: all var(--dur) var(--ease);
+  white-space: nowrap;
+}
+
+.tab:hover {
+  color: var(--t2);
+  background: var(--bg-4);
+}
+
+.tabActive {
+  color: var(--t1);
+  background: var(--bg-5);
+  box-shadow: var(--shadow-sm);
+}
+
+.tabCount {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  font-size: 0.65rem;
+  font-weight: 700;
+  background: var(--indigo-dim);
+  color: var(--indigo-light);
+  border-radius: 9px;
+  padding: 0 5px;
   font-family: var(--font-mono);
 }
 
-/* Task card list */
+/* ── Tab panels ─────────────────────────────────────────────── */
+.tabPanel {
+  animation: fadeIn 0.25s var(--ease);
+}
+
+/* ── Priority list ──────────────────────────────────────────── */
 .cardList {
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-/* Sidebar */
-.sidebar {
-  display: flex;
-  flex-direction: column;
+/* ── Schedule grid ──────────────────────────────────────────── */
+.scheduleGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 12px;
 }
 
-/* Schedule blocks */
-.scheduleBlocks {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+@media (max-width: 700px) {
+  .scheduleGrid { grid-template-columns: 1fr; }
 }
 
-.block {
+.scheduleBlock {
   background: var(--bg-2);
   border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 14px 16px;
+  border-radius: var(--radius-md);
+  padding: 16px;
   transition: border-color var(--dur) var(--ease);
 }
 
-.block:hover { border-color: var(--border-2); }
+.scheduleBlock:hover { border-color: var(--border-2); }
 
-.blockHead {
+.blockHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.blockMeta {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 10px;
 }
 
-.blockEmoji { font-size: 1.1rem; }
+.blockEmoji { font-size: 1.2rem; }
 
 .blockTitle {
-  font-size: 0.82rem;
+  font-size: 0.85rem;
   font-weight: 600;
   color: var(--t1);
 }
 
 .blockTime {
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   color: var(--t4);
+  font-family: var(--font-mono);
+}
+
+.blockCount {
+  font-size: 0.65rem;
+  color: var(--indigo-light);
+  background: var(--indigo-dim);
+  border: 1px solid var(--indigo-border);
+  border-radius: 10px;
+  padding: 2px 7px;
+  font-family: var(--font-mono);
 }
 
 .blockList {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 7px;
 }
 
 .blockItem {
@@ -143,69 +238,174 @@
   line-height: 1.4;
 }
 
-.blockDot {
-  width: 4px; height: 4px;
+.blockItemDot {
+  width: 6px;
+  height: 6px;
   border-radius: 50%;
-  background: var(--indigo);
   flex-shrink: 0;
-  opacity: 0.7;
+  opacity: 0.8;
+}
+
+.blockItemTitle {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.blockItemMins {
+  font-size: 0.65rem;
+  color: var(--t4);
+  font-family: var(--font-mono);
+  flex-shrink: 0;
 }
 
 .blockEmpty {
   font-size: 0.75rem;
   color: var(--t4);
-  font-style: italic;
-}
-
-/* Copy button */
-.copyBtn {
-  width: 100%;
-  padding: 10px 16px;
-  font-size: 0.8rem;
-  font-weight: 500;
-  color: var(--t2);
-  background: var(--bg-3);
-  border: 1px solid var(--border);
-  border-radius: 9px;
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 7px;
-  transition: all var(--dur) var(--ease);
+  gap: 6px;
+  padding: 8px 0;
 }
 
-.copyBtn:hover {
-  color: var(--t1);
-  border-color: var(--border-2);
+/* ── Insight cards ──────────────────────────────────────────── */
+.insightCard {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  padding: 18px;
+  margin-bottom: 12px;
+  transition: border-color var(--dur) var(--ease);
+}
+
+.insightCard:hover { border-color: var(--border-2); }
+
+.insightCard:last-child { margin-bottom: 0; }
+
+.insightCardHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.insightCardIcon { font-size: 1rem; }
+
+.insightCardTitle {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--t2);
+  letter-spacing: -0.01em;
+}
+
+/* ── Category chart ─────────────────────────────────────────── */
+.categoryChart {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.categoryRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.categoryLabel {
+  font-size: 0.72rem;
+  font-weight: 600;
+  width: 90px;
+  flex-shrink: 0;
+}
+
+.categoryTrack {
+  flex: 1;
+  height: 6px;
   background: var(--bg-4);
+  border-radius: 4px;
+  overflow: hidden;
 }
 
-.copyBtn.copied {
-  color: var(--green);
-  border-color: rgba(34,197,94,0.3);
-  background: rgba(34,197,94,0.06);
+.categoryFill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.9s var(--ease);
+  opacity: 0.8;
 }
 
-/* Challenge note */
+.categoryPct {
+  font-size: 0.7rem;
+  color: var(--t4);
+  font-family: var(--font-mono);
+  width: 20px;
+  text-align: right;
+}
+
+/* ── Score distribution ─────────────────────────────────────── */
+.scoreDistribution {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.scoreItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  background: var(--bg-3);
+  border-radius: var(--radius-sm);
+}
+
+.scoreItemRank {
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--t4);
+  font-family: var(--font-mono);
+  width: 22px;
+  flex-shrink: 0;
+}
+
+.scoreItemTitle {
+  flex: 1;
+  font-size: 0.78rem;
+  color: var(--t2);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.scoreItemBadge {
+  font-size: 0.78rem;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  flex-shrink: 0;
+}
+
+/* ── Coaching tip full ──────────────────────────────────────── */
+.coachingTipFull {
+  font-size: 0.85rem;
+  color: var(--sky);
+  line-height: 1.65;
+}
+
+/* ── Attribution ────────────────────────────────────────────── */
 .challengeNote {
   display: flex;
-  align-items: flex-start;
-  gap: 8px;
-  padding: 12px 14px;
-  background: rgba(255,153,0,0.04);
-  border: 1px solid rgba(255,153,0,0.12);
-  border-radius: 10px;
-}
-
-.challengeIcon { font-size: 0.9rem; flex-shrink: 0; padding-top: 1px; }
-
-.challengeNote p {
-  font-size: 0.73rem;
+  align-items: center;
+  gap: 9px;
+  padding: 12px 16px;
+  background: var(--orange-dim);
+  border: 1px solid rgba(255,153,0,0.15);
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
   color: var(--t4);
-  line-height: 1.5;
 }
 
 .challengeNote strong {
-  color: #ff9900;
+  color: var(--orange);
   font-weight: 600;
 }

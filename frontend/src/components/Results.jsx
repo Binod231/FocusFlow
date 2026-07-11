@@ -1,17 +1,19 @@
 import { useState } from "react";
 import styles from "./Results.module.css";
 import TaskCard from "./TaskCard";
-import { BLOCK_META } from "../constants";
+import StatsBar from "./StatsBar";
+import { BLOCK_META, CATEGORY_META } from "../constants";
 
 export default function Results({ data }) {
   const [copied, setCopied] = useState(false);
+  const [activeTab, setActiveTab] = useState("priority");
   const tasks = data.tasks || [];
   const schedule = data.schedule || {};
 
   function copyPlan() {
     const lines = [
       "🎯 FOCUSFLOW — YOUR DAILY PLAN",
-      "=".repeat(38),
+      "=".repeat(40),
       "",
       data.session_summary || "",
       "",
@@ -48,48 +50,137 @@ export default function Results({ data }) {
     });
   }
 
+  // Category breakdown for chart
+  const categoryBreakdown = tasks.reduce((acc, t) => {
+    acc[t.category] = (acc[t.category] || 0) + 1;
+    return acc;
+  }, {});
+
   return (
     <div className={styles.results}>
-      {/* Summary banner */}
+      {/* Session banner */}
       <div className={styles.banner}>
-        <div className={styles.bannerIcon}>🧠</div>
-        <div>
-          <p className={styles.bannerSummary}>{data.session_summary}</p>
-          {data.coaching_tip && (
-            <p className={styles.bannerTip}>
-              <span className={styles.tipIcon}>💡</span>
-              {data.coaching_tip}
-            </p>
-          )}
+        <div className={styles.bannerLeft}>
+          <div className={styles.bannerIconWrap} aria-hidden="true">
+            <span className={styles.bannerIcon}>🧠</span>
+          </div>
+          <div className={styles.bannerContent}>
+            <p className={styles.bannerSummary}>{data.session_summary}</p>
+            {data.coaching_tip && (
+              <div className={styles.coachingTip}>
+                <span className={styles.tipBadge} aria-hidden="true">💡</span>
+                <p className={styles.tipText}>{data.coaching_tip}</p>
+              </div>
+            )}
+          </div>
         </div>
+        <button
+          className={`${styles.copyBtn} ${copied ? styles.copied : ""}`}
+          onClick={copyPlan}
+          type="button"
+          aria-label="Copy plan to clipboard"
+        >
+          {copied ? (
+            <>
+              <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                <path d="M2.5 7l3 3 6-6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+              Copied!
+            </>
+          ) : (
+            <>
+              <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                <rect x="4" y="2" width="8" height="9" rx="1.5" stroke="currentColor" strokeWidth="1.2"/>
+                <path d="M2 4.5v7A1.5 1.5 0 003.5 13h6" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/>
+              </svg>
+              Copy Plan
+            </>
+          )}
+        </button>
       </div>
 
-      <div className={styles.grid}>
-        {/* Left: Priority list */}
-        <div>
-          <div className={styles.sectionHead}>
-            <span className={styles.sectionLabel}>Priority Ranking</span>
-            <span className={styles.sectionCount}>{tasks.length} tasks</span>
-          </div>
+      {/* Stats bar */}
+      <StatsBar tasks={tasks} />
+
+      {/* Tab navigation */}
+      <div className={styles.tabs} role="tablist" aria-label="Results views">
+        <button
+          className={`${styles.tab} ${activeTab === "priority" ? styles.tabActive : ""}`}
+          onClick={() => setActiveTab("priority")}
+          role="tab"
+          aria-selected={activeTab === "priority"}
+          aria-controls="panel-priority"
+          id="tab-priority"
+          type="button"
+        >
+          <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+            <path d="M2 3h10M2 7h7M2 11h5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+          </svg>
+          Priority List
+          <span className={styles.tabCount}>{tasks.length}</span>
+        </button>
+        <button
+          className={`${styles.tab} ${activeTab === "schedule" ? styles.tabActive : ""}`}
+          onClick={() => setActiveTab("schedule")}
+          role="tab"
+          aria-selected={activeTab === "schedule"}
+          aria-controls="panel-schedule"
+          id="tab-schedule"
+          type="button"
+        >
+          <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+            <rect x="1" y="2" width="12" height="11" rx="2" stroke="currentColor" strokeWidth="1.2"/>
+            <path d="M4 1v2M10 1v2M1 6h12" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/>
+          </svg>
+          Daily Schedule
+        </button>
+        <button
+          className={`${styles.tab} ${activeTab === "insights" ? styles.tabActive : ""}`}
+          onClick={() => setActiveTab("insights")}
+          role="tab"
+          aria-selected={activeTab === "insights"}
+          aria-controls="panel-insights"
+          id="tab-insights"
+          type="button"
+        >
+          <svg width="13" height="13" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+            <circle cx="7" cy="7" r="6" stroke="currentColor" strokeWidth="1.2"/>
+            <path d="M7 4v4M7 10v.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+          </svg>
+          Insights
+        </button>
+      </div>
+
+      {/* Priority tab */}
+      {activeTab === "priority" && (
+        <div
+          id="panel-priority"
+          role="tabpanel"
+          aria-labelledby="tab-priority"
+          className={styles.tabPanel}
+        >
           <div className={styles.cardList} role="list" aria-label="Prioritized task list">
             {tasks.map((task, i) => (
               <TaskCard
                 key={task.id || i}
                 task={task}
                 rank={i + 1}
-                style={{ animationDelay: `${i * 55}ms` }}
+                style={{ animationDelay: `${i * 50}ms` }}
               />
             ))}
           </div>
         </div>
+      )}
 
-        {/* Right: Schedule + export */}
-        <div className={styles.sidebar}>
-          <div className={styles.sectionHead}>
-            <span className={styles.sectionLabel}>Daily Schedule</span>
-          </div>
-
-          <div className={styles.scheduleBlocks}>
+      {/* Schedule tab */}
+      {activeTab === "schedule" && (
+        <div
+          id="panel-schedule"
+          role="tabpanel"
+          aria-labelledby="tab-schedule"
+          className={styles.tabPanel}
+        >
+          <div className={styles.scheduleGrid}>
             {["morning", "afternoon", "evening"].map(block => {
               const ids = schedule[block] || [];
               const bm = BLOCK_META[block];
@@ -98,66 +189,133 @@ export default function Results({ data }) {
                 .filter(Boolean);
 
               return (
-                <div key={block} className={styles.block}>
-                  <div className={styles.blockHead}>
-                    <span className={styles.blockEmoji} aria-hidden="true">{bm.emoji}</span>
-                    <div>
-                      <div className={styles.blockTitle}>{bm.label}</div>
-                      <div className={styles.blockTime}>{bm.time}</div>
+                <div key={block} className={styles.scheduleBlock}>
+                  <div className={styles.blockHeader}>
+                    <div className={styles.blockMeta}>
+                      <span className={styles.blockEmoji} aria-hidden="true">{bm.emoji}</span>
+                      <div>
+                        <div className={styles.blockTitle}>{bm.label}</div>
+                        <div className={styles.blockTime}>{bm.time}</div>
+                      </div>
                     </div>
+                    <span className={styles.blockCount}>
+                      {blockTasks.length} task{blockTasks.length !== 1 ? "s" : ""}
+                    </span>
                   </div>
+
                   {blockTasks.length > 0 ? (
                     <ul className={styles.blockList} aria-label={`${bm.label} tasks`}>
-                      {blockTasks.map((t, i) => (
-                        <li key={i} className={styles.blockItem}>
-                          <span className={styles.blockDot} aria-hidden="true" />
-                          {t.title}
-                        </li>
-                      ))}
+                      {blockTasks.map((t, idx) => {
+                        const catMeta = CATEGORY_META[t.category] || CATEGORY_META.routine;
+                        return (
+                          <li key={idx} className={styles.blockItem}>
+                            <span
+                              className={styles.blockItemDot}
+                              style={{ background: catMeta.color }}
+                              aria-hidden="true"
+                            />
+                            <span className={styles.blockItemTitle}>{t.title}</span>
+                            <span className={styles.blockItemMins}>
+                              {t.estimated_minutes}m
+                            </span>
+                          </li>
+                        );
+                      })}
                     </ul>
                   ) : (
-                    <p className={styles.blockEmpty}>Nothing here — enjoy the break</p>
+                    <p className={styles.blockEmpty}>
+                      <span aria-hidden="true">☕</span> Free time — recharge!
+                    </p>
                   )}
                 </div>
               );
             })}
           </div>
-
-          <button
-            id="copy-plan-btn"
-            className={`${styles.copyBtn} ${copied ? styles.copied : ""}`}
-            onClick={copyPlan}
-            type="button"
-            aria-label="Copy plan to clipboard"
-          >
-            {copied ? (
-              <>
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                  <path d="M2.5 7l3 3 6-6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                </svg>
-                Copied!
-              </>
-            ) : (
-              <>
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
-                  <rect x="4" y="2" width="8" height="9" rx="1.5" stroke="currentColor" strokeWidth="1.2"/>
-                  <path d="M2 4.5v7A1.5 1.5 0 003.5 13h6" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/>
-                </svg>
-                Copy Full Plan
-              </>
-            )}
-          </button>
-
-          {/* Challenge attribution */}
-          <div className={styles.challengeNote}>
-            <span className={styles.challengeIcon}>🏆</span>
-            <p>
-              Built for the{" "}
-              <strong>AWS Weekend Productivity Challenge</strong>
-              {" "}· July 2026
-            </p>
-          </div>
         </div>
+      )}
+
+      {/* Insights tab */}
+      {activeTab === "insights" && (
+        <div
+          id="panel-insights"
+          role="tabpanel"
+          aria-labelledby="tab-insights"
+          className={styles.tabPanel}
+        >
+          {/* Category breakdown */}
+          <div className={styles.insightCard}>
+            <div className={styles.insightCardHeader}>
+              <span className={styles.insightCardIcon} aria-hidden="true">🏷</span>
+              <h3 className={styles.insightCardTitle}>Category Breakdown</h3>
+            </div>
+            <div className={styles.categoryChart}>
+              {Object.entries(categoryBreakdown).map(([cat, count]) => {
+                const meta = CATEGORY_META[cat] || CATEGORY_META.routine;
+                const pct = Math.round((count / tasks.length) * 100);
+                return (
+                  <div key={cat} className={styles.categoryRow}>
+                    <span className={styles.categoryLabel} style={{ color: meta.color }}>
+                      {meta.label}
+                    </span>
+                    <div className={styles.categoryTrack} aria-label={`${pct}%`}>
+                      <div
+                        className={styles.categoryFill}
+                        style={{ width: `${pct}%`, background: meta.color }}
+                      />
+                    </div>
+                    <span className={styles.categoryPct}>{count}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Score distribution */}
+          <div className={styles.insightCard}>
+            <div className={styles.insightCardHeader}>
+              <span className={styles.insightCardIcon} aria-hidden="true">📊</span>
+              <h3 className={styles.insightCardTitle}>Priority Score Distribution</h3>
+            </div>
+            <div className={styles.scoreDistribution}>
+              {tasks.slice(0, 5).map((t, i) => (
+                <div key={i} className={styles.scoreItem}>
+                  <span className={styles.scoreItemRank}>#{i + 1}</span>
+                  <span className={styles.scoreItemTitle}>{t.title}</span>
+                  <span
+                    className={styles.scoreItemBadge}
+                    style={{
+                      color: t.priority_score >= 7.5 ? "var(--rose)" :
+                             t.priority_score >= 5 ? "var(--amber)" : "var(--green)"
+                    }}
+                  >
+                    {t.priority_score?.toFixed(1)}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Coaching tip highlight */}
+          {data.coaching_tip && (
+            <div className={styles.insightCard} style={{ borderColor: "rgba(56,189,248,0.25)" }}>
+              <div className={styles.insightCardHeader}>
+                <span className={styles.insightCardIcon} aria-hidden="true">💡</span>
+                <h3 className={styles.insightCardTitle}>Today's Coaching Tip</h3>
+              </div>
+              <p className={styles.coachingTipFull}>{data.coaching_tip}</p>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Footer attribution */}
+      <div className={styles.challengeNote}>
+        <span aria-hidden="true">🏆</span>
+        <p>
+          Built for the{" "}
+          <strong>AWS Weekend Productivity Challenge</strong>
+          {" "}· July 2026
+        </p>
       </div>
     </div>
   );
