@@ -76,7 +76,7 @@ export function useStreak() {
 }
 
 /**
- * useHistory — last 5 sessions from localStorage.
+ * useHistory — last 7 sessions from localStorage.
  */
 export function useHistory() {
   const [history, setHistory] = useState([]);
@@ -100,6 +100,7 @@ function saveToHistory(data, rawTasks) {
       taskCount: data.tasks?.length || 0,
       summary: data.session_summary || "",
       topTask: data.tasks?.[0]?.title || "",
+      rawTasks: rawTasks || "",  // save the full original task list
     };
     const updated = [entry, ...existing].slice(0, 7); // keep last 7
     localStorage.setItem(HISTORY_KEY, JSON.stringify(updated));

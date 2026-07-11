@@ -41,10 +41,12 @@ export default function InputPanel({ input, setInput, onSubmit, loading, error, 
   }
 
   function loadFromHistory(entry) {
-    if (entry.topTask) {
-      setInput(entry.topTask);
+    const tasks = entry.rawTasks || entry.topTask || "";
+    if (tasks) {
+      setInput(tasks);
       setError(null);
       setShowHistory(false);
+      setTimeout(() => textareaRef.current?.focus(), 50);
     }
   }
 
