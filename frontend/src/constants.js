@@ -1,5 +1,5 @@
 // FocusFlow — Shared constants
-export const API_URL = "https://y5kycth1g2.execute-api.us-east-1.amazonaws.com/prod/prioritize";
+export const API_URL = "https://b4v7xiur5b.execute-api.us-east-1.amazonaws.com/prod/prioritize";
 
 export const EXAMPLE_TASKS = `Fix critical payment bug blocking the release
 Write Q3 performance reviews for my team
