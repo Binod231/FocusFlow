@@ -245,6 +245,10 @@
   .statusPill { display: none; }
 }
 
-@media (max-width: 400px) {
+@media (max-width: 450px) {
   .streakLabel { display: none; }
+  .wordmark { font-size: 0.85rem; }
+  .logoMark { width: 30px; height: 30px; }
+  .iconBtn { width: 30px; height: 30px; }
+  .rightGroup { gap: 6px; }
 }
