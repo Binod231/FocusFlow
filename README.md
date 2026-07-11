@@ -8,7 +8,7 @@
 
 **FocusFlow** is a premium, AI-powered task prioritizer built for the **AWS Weekend Productivity Challenge**. It cures decision fatigue by taking your chaotic brain-dump of daily tasks and instantly turning it into a structured, categorized, and scored daily schedule.
 
-> **Live Demo:** [https://main.d2dgdbrgwxrtoy.amplifyapp.com](https://main.d2dgdbrgwxrtoy.amplifyapp.com)
+> **Live Demo:** [Live APP](https://main.d1xqv5h2l9qnsy.amplifyapp.com/)
 
 ---
 
