@@ -1,133 +1,131 @@
-# FocusFlow
+# FocusFlow 🧠⚡
 
-> **AI-Powered Task Prioritizer** — AWS Weekend Productivity Challenge 2026
+[![AWS Weekend Productivity Challenge](https://img.shields.io/badge/AWS-Weekend_Challenge-FF9900?logo=amazonaws)](https://aws.amazon.com)
+[![React](https://img.shields.io/badge/React-18-61DAFB?logo=react&logoColor=black)](https://reactjs.org/)
+[![Vite](https://img.shields.io/badge/Vite-5-646CFF?logo=vite)](https://vitejs.dev/)
+[![Serverless](https://img.shields.io/badge/AWS_SAM-Serverless-FF9900?logo=aws-lambda)](https://aws.amazon.com/serverless/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
-Stop guessing what to work on. Paste your to-do list → FocusFlow's AI engine scores every task by urgency & impact, builds your daily schedule, and tells you exactly what to tackle first.
+**FocusFlow** is a premium, AI-powered task prioritizer built for the **AWS Weekend Productivity Challenge**. It cures decision fatigue by taking your chaotic brain-dump of daily tasks and instantly turning it into a structured, categorized, and scored daily schedule.
 
-![FocusFlow UI screenshot](docs/screenshot.png)
-
----
-
-## ✨ Features
-
-- **AI Priority Scoring** — Every task gets a 1–10 Urgency + Impact score powered by Amazon Bedrock Nova Lite
-- **Daily Schedule Planner** — Tasks automatically bucketed into morning / afternoon / evening blocks
-- **Per-Task Insights** — One-sentence AI coaching tip explaining *why* each task is ranked where it is
-- **One-Click Export** — Copy your full prioritized plan to clipboard
-- **Zero login required** — Works instantly, sessions stored in DynamoDB for 30 days
+> **Live Demo:** [https://main.d2dgdbrgwxrtoy.amplifyapp.com](https://main.d2dgdbrgwxrtoy.amplifyapp.com)
 
 ---
 
-## 🏗 Architecture
+## 🎯 The Vision
 
+We all have a running mental list of things to do, but deciding *what to do next* often causes decision fatigue. Traditional to-do apps give you a static checklist and force you to assign arbitrary priorities. 
+
+FocusFlow acts as your personal executive assistant. Powered by **Amazon Bedrock (Nova Lite)**, it analyzes your raw tasks, scores each item on urgency and impact, and returns a fully actionable daily plan with time-blocking (Morning, Afternoon, Evening) and categorizations (Deep Work, Comms, Admin).
+
+---
+
+## 🏗️ Architecture & Tech Stack
+
+FocusFlow is a 100% serverless application built entirely on the AWS Free Tier, optimized for extreme speed and low maintenance.
+
+```mermaid
+flowchart LR
+    User([User / Browser])
+    
+    subgraph Frontend
+        Amplify[AWS Amplify Hosting]
+    end
+    
+    subgraph Backend [Serverless Backend]
+        APIGW[Amazon API Gateway]
+        Lambda[AWS Lambda Function]
+        DB[(Amazon DynamoDB)]
+        Bedrock((Amazon Bedrock\nNova Lite))
+    end
+    
+    User -->|Visits Site| Amplify
+    User -->|POST /prioritize| APIGW
+    APIGW -->|Triggers| Lambda
+    Lambda -->|Generates prompt & inference| Bedrock
+    Lambda -->|Logs session| DB
+    
+    classDef aws fill:#FF9900,stroke:#232F3E,stroke-width:2px,color:#232F3E,font-weight:bold;
+    classDef client fill:#f0f0ff,stroke:#6366f1,stroke-width:2px,color:#1c1c2a,font-weight:bold;
+    
+    class Amplify,APIGW,Lambda,DB,Bedrock aws;
+    class User client;
 ```
-Browser (Amplify Hosting)
-    │
-    ▼
-API Gateway ──► Lambda (Python 3.12) ──► Amazon Bedrock Nova Lite
-                      │
-                      ▼
-                 DynamoDB (task sessions, 30-day TTL)
-```
 
-### AWS Services Used
+### 💻 Frontend (React + Vite)
+- **Framework:** React 18 with Vite for blazing fast HMR and builds.
+- **Styling:** Vanilla CSS Modules with a custom dark-mode "editor" design system.
+- **Typography:** `Inter` for legibility and `JetBrains Mono` for data density.
+- **Hosting:** AWS Amplify Hosting (Global Edge CDN).
 
-| Service | Purpose |
-|---|---|
-| **Amazon Bedrock (Nova Lite)** | AI task prioritization & scheduling |
-| **AWS Lambda** | Serverless backend |
-| **Amazon API Gateway** | REST API with CORS |
-| **Amazon DynamoDB** | Session history storage |
-| **AWS Amplify Hosting** | Static frontend deployment |
-| **AWS SAM** | Infrastructure as code |
+### ☁️ Backend (AWS Serverless)
+- **Infrastructure:** AWS Serverless Application Model (SAM).
+- **Compute:** AWS Lambda (Python 3.12).
+- **API:** Amazon API Gateway (REST).
+- **Database:** Amazon DynamoDB (On-Demand with 30-day TTL).
+- **AI/ML:** Amazon Bedrock (`amazon.nova-lite-v1:0`).
 
 ---
 
-## 🚀 Deployment
+## 🚀 Local Development Setup
 
 ### Prerequisites
+- Node.js (v18+)
+- Python (3.12+)
+- AWS CLI configured with administrator access (`aws configure`)
+- AWS SAM CLI installed
+
+### 1. Backend Setup
+
+First, ensure you have enabled model access for **Amazon Nova Lite** in the AWS Bedrock Console for your region (e.g., `us-east-1`).
 
 ```bash
-# 1. Install AWS CLI and SAM CLI
-# https://docs.aws.amazon.com/cli/latest/userguide/install-cliv2.html
-# https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/install-sam-cli.html
+# Navigate to backend directory
+cd backend
 
-# 2. Configure AWS credentials
-aws configure
+# Build the SAM application
+sam build
 
-# 3. Enable Bedrock Nova Lite in your AWS console
-# Console → Amazon Bedrock → Model access → amazon.nova-lite-v1:0 → Enable
+# Deploy to your AWS account
+sam deploy --guided
+```
+*Note the `ApiUrl` provided in the CloudFormation outputs upon successful deployment.*
+
+### 2. Frontend Setup
+
+```bash
+# Navigate to frontend directory
+cd frontend
+
+# Install dependencies
+npm install
 ```
 
-### One-Command Deploy
+Update the `API_URL` in `frontend/src/constants.js` with the API Gateway URL generated from your SAM deployment:
+```javascript
+export const API_URL = "https://<your-api-id>.execute-api.us-east-1.amazonaws.com/prod/prioritize";
+```
+
+Start the local development server:
+```bash
+npm run dev
+```
+
+---
+
+## 📦 One-Click Deployment Script
+
+For convenience, a full stack deployment script is included. It handles SAM building, CloudFormation deployment, frontend Vite building, zipping, and AWS Amplify deployment.
 
 ```bash
 chmod +x deploy.sh
 ./deploy.sh
 ```
 
-The script will:
-1. ✅ Verify AWS CLI + SAM CLI are installed
-2. ✅ Create an S3 bucket for SAM artifacts
-3. ✅ Build and deploy the Lambda function
-4. ✅ Set up API Gateway and DynamoDB
-5. ✅ Automatically inject the live API URL into `frontend/app.js`
-6. ✅ Deploy the frontend to Amplify Hosting
-
-### Local Testing (Before Deploy)
-
-```bash
-cd backend
-sam build
-sam local invoke PrioritizeFunction --event test-event.json
-```
-
-### Manual Frontend Deploy
-
-If the Amplify CLI step fails, drag-and-drop the `frontend/` folder at:
-`https://console.aws.amazon.com/amplify/home`
-
 ---
 
-## 📁 Project Structure
+## 🏆 Hackathon Details
+Built by **Binod Joshi** for the July 2026 AWS Builder Center hackathon. 
 
-```
-focusflow/
-├── backend/
-│   ├── lambda/
-│   │   └── handler.py          # Lambda function (Bedrock + DynamoDB)
-│   ├── template.yaml           # AWS SAM infrastructure
-│   └── test-event.json         # Local test payload
-├── frontend/
-│   ├── index.html              # Single-page app
-│   ├── styles.css              # Premium dark-mode UI
-│   └── app.js                  # API integration + rendering
-└── deploy.sh                   # Automated deployment
-```
-
----
-
-## 💰 AWS Free Tier Costs
-
-This app is designed to run **entirely within AWS Free Tier**:
-
-| Service | Free Tier Limit | Expected Usage |
-|---|---|---|
-| Lambda | 1M requests/month | ~100 requests/month |
-| API Gateway | 1M calls/month | ~100 calls/month |
-| DynamoDB | 25 GB + 25 WCU/RCU | Minimal |
-| Amplify Hosting | 5 GB storage, 15 GB transfer | Minimal |
-| Bedrock Nova Lite | ~$0.0003/1K input tokens | ~$0.01/month |
-
----
-
-## 📄 Article
-
-Read the full build story on AWS Builder Center:
-[Weekend Productivity Challenge: FocusFlow — AI Task Prioritizer](#)
-
----
-
-## License
-
-MIT
+- **Primary Goal:** Prove that powerful, AI-driven applications can be built entirely on AWS Free Tier services using Serverless architecture.
+- **Key Challenge Overcome:** Ensuring strict JSON output from LLMs for predictable frontend UI rendering without relying on heavyweight frameworks.
