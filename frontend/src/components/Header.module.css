@@ -1,0 +1,119 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  border-bottom: 1px solid var(--border);
+  background: rgba(12, 12, 14, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+}
+
+.inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+/* Logo */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  flex-shrink: 0;
+}
+
+.logoMark {
+  width: 32px;
+  height: 32px;
+  background: var(--bg-3);
+  border: 1px solid var(--indigo-border);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.wordmark {
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--t1);
+}
+
+/* Challenge tag */
+.challengeTag {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--t3);
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+}
+
+.challengeDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 6px var(--green);
+  animation: pulse 2s ease-in-out infinite;
+  flex-shrink: 0;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.5; transform: scale(0.85); }
+}
+
+/* Right group */
+.rightGroup {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+/* Streak */
+.streak {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 4px 10px;
+  cursor: default;
+}
+
+.streakFlame { font-size: 0.8rem; }
+.streakNum   { font-size: 0.8rem; font-weight: 700; color: var(--amber); font-family: var(--font-mono); }
+.streakLabel { font-size: 0.7rem; color: var(--t3); }
+
+/* GitHub */
+.ghLink {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  color: var(--t3);
+  transition: color var(--dur) var(--ease), background var(--dur) var(--ease);
+}
+
+.ghLink:hover {
+  color: var(--t1);
+  background: var(--bg-3);
+}
+
+@media (max-width: 600px) {
+  .challengeTag { display: none; }
+  .inner { padding: 0 16px; }
+}

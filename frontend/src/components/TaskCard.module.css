@@ -1,0 +1,176 @@
+.card {
+  display: grid;
+  grid-template-columns: 36px 1fr 44px;
+  gap: 0 14px;
+  align-items: start;
+  padding: 16px 18px;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  transition: all 200ms var(--ease);
+  animation: slideUp 0.35s var(--ease) both;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.card:hover {
+  border-color: var(--border-2);
+  background: var(--bg-3);
+  transform: translateX(3px);
+}
+
+.card.done {
+  opacity: 0.45;
+}
+
+/* Rank */
+.rank {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-top: 3px;
+}
+
+.rankEmoji { font-size: 1.2rem; line-height: 1; }
+.rankNum   { font-size: 0.72rem; font-weight: 700; color: var(--t4); font-family: var(--font-mono); }
+
+/* Body */
+.body { min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--t1);
+  letter-spacing: -0.01em;
+  line-height: 1.4;
+  flex: 1;
+  min-width: 0;
+  word-break: break-word;
+  transition: color var(--dur) var(--ease);
+}
+
+.title.titleDone {
+  text-decoration: line-through;
+  color: var(--t4);
+}
+
+/* Checkbox */
+.checkbox {
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  border: 1.5px solid var(--border-2);
+  background: transparent;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--green);
+  transition: all var(--dur) var(--ease);
+}
+
+.checkbox:hover { border-color: var(--green); background: rgba(34,197,94,0.08); }
+.checkbox.checked { background: rgba(34,197,94,0.15); border-color: var(--green); }
+
+/* Insight */
+.insight {
+  font-size: 0.78rem;
+  color: var(--t3);
+  line-height: 1.55;
+}
+
+/* Tags */
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--t3);
+  background: var(--bg-4);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 3px 7px;
+}
+
+/* Score bars */
+.bars {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 2px;
+}
+
+.bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.barLabel {
+  font-size: 0.65rem;
+  color: var(--t4);
+  width: 44px;
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+}
+
+.barTrack {
+  flex: 1;
+  height: 3px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.barFill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.8s var(--ease);
+}
+
+.barVal {
+  font-size: 0.65rem;
+  color: var(--t4);
+  font-family: var(--font-mono);
+  width: 14px;
+  text-align: right;
+}
+
+/* Score column */
+.scoreCol {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding-top: 2px;
+}
+
+.ring { overflow: visible; }
+
+.ringFill {
+  transition: stroke-dasharray 1s var(--ease);
+}
+
+.scoreLabel {
+  font-size: 0.6rem;
+  color: var(--t4);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-family: var(--font-mono);
+}

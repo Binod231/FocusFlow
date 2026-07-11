@@ -1,0 +1,75 @@
+/* ================================================================
+   FocusFlow — Global Design System
+   Philosophy: Dense but breathable. Editorial. Humanized.
+   Not a SaaS template. A tool people come back to every day.
+================================================================ */
+
+/* ── Google Fonts Fallback ─────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700;800;900&family=Geist+Mono:wght@400;500&display=swap');
+
+/* ── CSS Variables ─────────────────────────────────────────── */
+:root {
+  /* Brand */
+  --indigo:        #6366f1;
+  --indigo-dim:    rgba(99, 102, 241, 0.15);
+  --indigo-border: rgba(99, 102, 241, 0.3);
+
+  /* Neutrals — warm-tinted dark, NOT pure black */
+  --bg:            #0c0c0e;
+  --bg-2:          #111115;
+  --bg-3:          #18181d;
+  --bg-4:          #1f1f26;
+  --border:        rgba(255,255,255,0.07);
+  --border-2:      rgba(255,255,255,0.12);
+
+  /* Text */
+  --t1: #f4f4f5;
+  --t2: #a1a1aa;
+  --t3: #52525b;
+  --t4: #3f3f46;
+
+  /* Semantic */
+  --green:   #22c55e;
+  --amber:   #f59e0b;
+  --rose:    #f43f5e;
+  --sky:     #38bdf8;
+  --violet:  #a78bfa;
+
+  /* Type */
+  --font:      'Geist', 'Inter', system-ui, sans-serif;
+  --font-mono: 'Geist Mono', 'JetBrains Mono', monospace;
+
+  /* Motion */
+  --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --dur: 220ms;
+}
+
+/* ── Reset ─────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--t1);
+  min-height: 100vh;
+  overflow-x: hidden;
+  line-height: 1.5;
+}
+
+button { font-family: var(--font); cursor: pointer; border: none; background: none; }
+input, textarea { font-family: var(--font); }
+a { color: inherit; text-decoration: none; }
+ul, ol { list-style: none; }
+img, svg { display: block; }
